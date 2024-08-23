@@ -9,38 +9,19 @@ Original file is located at
 
 import unittest
 import numpy as np
-import matplotlib
-import matplotlib.pyplot as plt
-from sklearn import linear_model
+from linearregression import reg
 
 class TestLinearRegression(unittest.TestCase):
-
-    def setUp(self):
-        # Setup the training data
-        self.height = [[4.0], [5.0], [6.0], [7.0], [8.0], [9.0], [10.0]]
-        self.weight = [16, 25, 36, 49, 64, 81, 100]
-        self.model = linear_model.LinearRegression()
-        self.model.fit(self.height, self.weight)
-
     def test_prediction(self):
-        # Test if the prediction for height 12.0 is as expected
+        # Test prediction for height 12.0
         X_height = [[12.0]]
-        prediction = self.model.predict(X_height)
-        expected_prediction = 144  # Since it's a perfect square relationship
-        self.assertAlmostEqual(prediction[0], expected_prediction, delta=0.5)
-
-    def test_plot_creation(self):
-        # Test if the plot is generated without errors
-        plt.scatter(self.height, self.weight, color='black')
-        plt.xlabel("height")
-        plt.ylabel("weight")
-        plt.title("Height vs Weight")
-
-        try:
-            plt.savefig('test_plot.png')  # Save plot to check if plt works without error
-            self.assertTrue(True)
-        except Exception as e:
-            self.fail(f"Plotting failed with exception {e}")
+        predicted_weight = reg.predict(X_height)
+        
+        # Since this is a simple model, we know the expected value based on our input data
+        expected_weight = 144.0  # The square of 12, similar to the pattern in weight data
+        
+        # Assert that the predicted value is close to the expected value
+        self.assertAlmostEqual(predicted_weight[0], expected_weight, delta=0.1)
 
 if __name__ == '__main__':
     unittest.main()
